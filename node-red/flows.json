@@ -1,0 +1,302 @@
+[
+    {
+        "id": "1efb62a8.46c9cd",
+        "type": "tab",
+        "label": "플로우 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "df694fe3.7348",
+        "type": "debug",
+        "z": "1efb62a8.46c9cd",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 930,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "54b287e5.00b868",
+        "type": "serial in",
+        "z": "1efb62a8.46c9cd",
+        "name": "HC-12 (arduino)",
+        "serial": "a25ab2dc.e63b7",
+        "x": 330,
+        "y": 380,
+        "wires": [
+            [
+                "ba591b4e.5a1428",
+                "9bfd9316.a45b2",
+                "7fd10b6.dfcddf4"
+            ]
+        ]
+    },
+    {
+        "id": "2a522cfe.cbc604",
+        "type": "influxdb out",
+        "z": "1efb62a8.46c9cd",
+        "influxdb": "cecbde72.1deab",
+        "name": "",
+        "measurement": "test",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 810,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "ba591b4e.5a1428",
+        "type": "function",
+        "z": "1efb62a8.46c9cd",
+        "name": "",
+        "func": "inputjson = JSON.parse(msg.payload);\n\nvar _fields = {};\nfor(var item in inputjson) {\n    _fields[item] = inputjson[item];\n}\n\nmsg.payload = [\n    _fields,\n    ];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 710,
+        "y": 300,
+        "wires": [
+            [
+                "df694fe3.7348"
+            ]
+        ]
+    },
+    {
+        "id": "9bfd9316.a45b2",
+        "type": "debug",
+        "z": "1efb62a8.46c9cd",
+        "name": "raw input",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "c81dfa40.593d98",
+        "type": "inject",
+        "z": "1efb62a8.46c9cd",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[{D: 1, A: 1, T: 150},]",
+        "payloadType": "str",
+        "x": 330,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7fd10b6.dfcddf4",
+        "type": "json",
+        "z": "1efb62a8.46c9cd",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 580,
+        "y": 460,
+        "wires": [
+            [
+                "2a522cfe.cbc604"
+            ]
+        ]
+    },
+    {
+        "id": "34c5f2e2.7169ce",
+        "type": "mqtt in",
+        "z": "1efb62a8.46c9cd",
+        "name": "",
+        "topic": "testTopic",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "71053b8.7102bc4",
+        "x": 330,
+        "y": 700,
+        "wires": [
+            [
+                "58c7afd7.eb1b4",
+                "bedcad4.9ca2a5"
+            ]
+        ]
+    },
+    {
+        "id": "58c7afd7.eb1b4",
+        "type": "debug",
+        "z": "1efb62a8.46c9cd",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "79a4614c.9c414",
+        "type": "mqtt out",
+        "z": "1efb62a8.46c9cd",
+        "name": "",
+        "topic": "testTopic",
+        "qos": "2",
+        "retain": "",
+        "broker": "71053b8.7102bc4",
+        "x": 710,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "5971ba16.dd12b4",
+        "type": "inject",
+        "z": "1efb62a8.46c9cd",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 330,
+        "y": 800,
+        "wires": [
+            [
+                "79a4614c.9c414"
+            ]
+        ]
+    },
+    {
+        "id": "bedcad4.9ca2a5",
+        "type": "json",
+        "z": "1efb62a8.46c9cd",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 560,
+        "y": 640,
+        "wires": [
+            [
+                "b135f337.21176"
+            ]
+        ]
+    },
+    {
+        "id": "b135f337.21176",
+        "type": "influxdb out",
+        "z": "1efb62a8.46c9cd",
+        "influxdb": "cecbde72.1deab",
+        "name": "",
+        "measurement": "test",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 810,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "a25ab2dc.e63b7",
+        "type": "serial-port",
+        "serialport": "/dev/ttyUSB0",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "100"
+    },
+    {
+        "id": "cecbde72.1deab",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "hc12",
+        "name": "pi",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "1.x",
+        "url": "http://localhost:8086",
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "71053b8.7102bc4",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    }
+]
